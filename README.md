@@ -57,26 +57,8 @@ Shared data models and repositories will allow the modules to communicate.
 
 ## 🚀 Getting Started
 
-Setup and installation instructions will be added once the Android project structure and dependencies are finalized.
-
 To run the application when available, you will need Android Studio and a compatible Android device. AR functionality requires a device supported by ARCore; smartwatch features require a compatible Wear OS environment.
 
-## 📍 Development Roadmap
 
-- [ ] Initialize the Android application and shared architecture.
-- [ ] Implement authentication and user profiles.
-- [ ] Implement friends and friend requests.
-- [ ] Add AR plant placement and garden editing.
-- [ ] Save and restore garden layouts.
-- [ ] Add plant health and watering logic.
-- [ ] Integrate Wear OS reminders and watering actions.
-- [ ] Test and integrate the minimum required features.
-- [ ] Explore optional competitive and visual features.
-
-## 🎓 About the Project
-
-Developed as an academic group project by **three students**. An existing AR demo app is being used as a **technical reference**, while the AR Garden application is being developed as a new project.
-
-## 📄 License
 
 No open-source license has been selected yet. Please contact the project contributors before reusing or redistributing code or assets.
