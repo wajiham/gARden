@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "123276057703",
+    "project_id": "garden-epfl",
+    "storage_bucket": "garden-epfl.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123276057703:android:14553e03886a9288b948c2",
+        "android_client_info": {
+          "package_name": "ch.argarden.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9OLAFdB1dwVHz89qkcHSXXoY1fw9PhdA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

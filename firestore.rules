@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isMember(data) { return signedIn() && request.auth.uid in data.members; }
+    match /users/{uid} {
+      // Usernames and IDs are public to signed-in users; email stays in Auth.
+      allow read: if signedIn();
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasAll(['uid', 'username', 'usernameNormalized'])
+        && request.resource.data.keys().hasOnly(['uid', 'username', 'usernameNormalized'])
+        && request.resource.data.uid == uid
+        && request.resource.data.username is string
+        && request.resource.data.username.matches('^[A-Za-z0-9_]{3,24}$')
+        && request.resource.data.usernameNormalized == request.resource.data.username.lower();
+      allow delete: if false;
+    }
+    match /relationships/{pairId} {
+      function validNew() {
+        let d = request.resource.data;
+        return d.keys().hasAll(['members', 'senderId', 'recipientId', 'status'])
+          && d.keys().hasOnly(['members', 'senderId', 'recipientId', 'status'])
+          && d.members is list && d.members.size() == 2
+          && d.senderId is string && d.recipientId is string
+          && d.senderId.matches('^[^|/]+$') && d.recipientId.matches('^[^|/]+$')
+          && d.senderId != d.recipientId
+          && d.senderId in d.members && d.recipientId in d.members
+          && pairId == d.members[0] + '|' + d.members[1]
+          && d.senderId == request.auth.uid && d.status == 'PENDING'
+          && exists(/databases/$(database)/documents/users/$(d.senderId))
+          && exists(/databases/$(database)/documents/users/$(d.recipientId))
+          // Clients sort UIDs. Also reject a malicious reversed ID, even in a batch.
+          && !existsAfter(/databases/$(database)/documents/relationships/$(d.members[1] + '|' + d.members[0]));
+      }
+      // Transactions must be able to read a missing pair before creating it.
+      allow get: if signedIn() && (!exists(/databases/$(database)/documents/relationships/$(pairId)) || isMember(resource.data));
+      allow list: if isMember(resource.data);
+      allow create: if signedIn() && validNew();
+      allow update: if isMember(resource.data)
+        && resource.data.recipientId == request.auth.uid
+        && resource.data.status == 'PENDING'
+        && request.resource.data.status == 'ACCEPTED'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']);
+      allow delete: if isMember(resource.data) && (
+        resource.data.status == 'ACCEPTED' ||
+        (resource.data.status == 'PENDING' && resource.data.recipientId == request.auth.uid));
+    }
+    // Future garden/watering collections stay closed until their owners add reviewed rules.
+    match /{document=**} { allow read, write: if false; }
+  }
+}

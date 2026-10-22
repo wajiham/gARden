@@ -1,0 +1,35 @@
+# Generated build output and machine-specific state
+.gradle/
+.kotlin/
+.idea/
+**/build/
+local.properties
+node_modules/
+.firebase/
+.firebaserc
+captures/
+.externalNativeBuild/
+.cxx/
+*.log
+*.apk
+*.aab
+
+# Private experiments and authentication test data
+private-testing/
+app/src/androidTest/assets/live-accounts.json
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+*.p12
+*.pem
+*service-account*.json
+*firebase-adminsdk*.json
+
+# Editor/OS artifacts
+*.iml
+.DS_Store
+Thumbs.db
+
+

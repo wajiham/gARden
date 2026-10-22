@@ -1,0 +1,5 @@
+{
+  "name": "argarden-rules-tests", "private": true, "version": "0.1.0", "type": "module",
+  "scripts": { "test:rules": "firebase emulators:exec --only firestore --project demo-argarden \"node --test tests/firestore.rules.test.mjs\"" },
+  "devDependencies": { "@firebase/rules-unit-testing": "5.0.0", "firebase": "12.4.0", "firebase-tools": "14.22.0" }
+}
